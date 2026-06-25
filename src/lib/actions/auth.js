@@ -29,10 +29,15 @@ export async function register(prevState, formData) {
   const { name, email, phone, password } = parsed.data;
 
   const supabase = await createClient();
+  const site = process.env.NEXT_PUBLIC_SITE_URL || '';
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name: name, phone: phone || '' } },
+    options: {
+      data: { full_name: name, phone: phone || '' },
+      // Arahkan link konfirmasi ke domain produksi (bukan localhost/Site URL default).
+      ...(site ? { emailRedirectTo: `${site}/auth/callback` } : {}),
+    },
   });
   if (error) {
     return { error: error.message.includes('registered') ? 'Email sudah terdaftar' : 'Gagal mendaftar' };

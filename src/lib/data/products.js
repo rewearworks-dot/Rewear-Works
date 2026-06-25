@@ -4,13 +4,13 @@ import { cache } from 'react';
 const SELECT = `
   *,
   category:categories ( id, name, slug ),
-  product_images ( url, position )
+  product_images ( id, url, position )
 `;
 
 function shape(p) {
-  const images = (p.product_images ?? [])
-    .sort((a, b) => a.position - b.position)
-    .map((i) => i.url);
+  const sorted = (p.product_images ?? []).slice().sort((a, b) => a.position - b.position);
+  const images = sorted.map((i) => i.url);
+  const imageItems = sorted.map((i) => ({ id: i.id, url: i.url }));
   return {
     ...p,
     price: p.price,
@@ -23,6 +23,7 @@ function shape(p) {
     categorySlug: p.category?.slug ?? '',
     category: p.category_id,
     images,
+    imageItems,
     image: images[0] ?? null,
   };
 }

@@ -156,12 +156,29 @@ export async function updateProduct(prevState, formData) {
     if (result.error) return result;
   }
 
-  // Hapus gambar yang ditandai untuk dihapus
+  // Hapus gambar yang ditandai untuk dihapus (DB + file Storage), dibatasi milik produk ini
   const deleteIds = formData.get('delete_image_ids');
   if (deleteIds) {
-    const ids = JSON.parse(deleteIds);
-    for (const imgId of ids) {
-      await supabase.from('product_images').delete().eq('id', imgId);
+    let ids = [];
+    try { ids = JSON.parse(deleteIds); } catch { ids = []; }
+    if (Array.isArray(ids) && ids.length > 0) {
+      // Ambil url dulu untuk menghapus file di Storage; scope ke product_id (keamanan)
+      const { data: imgs } = await supabase
+        .from('product_images').select('id, url')
+        .in('id', ids).eq('product_id', id);
+      if (imgs && imgs.length > 0) {
+        const paths = imgs.map(img => {
+          try {
+            return new URL(img.url).pathname
+              .replace('/storage/v1/object/public/product-images/', '');
+          } catch { return null; }
+        }).filter(Boolean);
+        if (paths.length > 0) {
+          await supabase.storage.from('product-images').remove(paths);
+        }
+        const validIds = imgs.map(i => i.id);
+        await supabase.from('product_images').delete().in('id', validIds).eq('product_id', id);
+      }
     }
   }
 

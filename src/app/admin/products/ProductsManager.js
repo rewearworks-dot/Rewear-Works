@@ -22,6 +22,7 @@ export default function ProductsManager({ products, categories }) {
   };
   const [form, setForm] = useState(emptyForm);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [removedImageIds, setRemovedImageIds] = useState([]);
   const [activeTab, setActiveTab] = useState('info');
 
   const filtered = products.filter(p => {
@@ -35,6 +36,7 @@ export default function ProductsManager({ products, categories }) {
     setEditItem(null);
     setForm({ ...emptyForm, category_id: categories[0]?.id || '' });
     setImagePreviews([]);
+    setRemovedImageIds([]);
     setActiveTab('info');
     setShowModal(true);
   };
@@ -59,7 +61,8 @@ export default function ProductsManager({ products, categories }) {
       featured: p.featured,
       measurements: { ...emptyForm.measurements, ...(p.measurements || {}) },
     });
-    setImagePreviews((p.images || []).map(url => ({ url })));
+    setImagePreviews((p.imageItems || []).map(it => ({ url: it.url, existingId: it.id })));
+    setRemovedImageIds([]);
     setActiveTab('info');
     setShowModal(true);
   };
@@ -85,6 +88,9 @@ export default function ProductsManager({ products, categories }) {
   };
 
   const removePreview = (index) => {
+    const item = imagePreviews[index];
+    // Foto lama (punya existingId) ditandai untuk dihapus dari DB & Storage saat simpan.
+    if (item?.existingId) setRemovedImageIds(ids => [...ids, item.existingId]);
     setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -100,6 +106,8 @@ export default function ProductsManager({ products, categories }) {
     // Lampirkan foto baru (objek File). Input file dikelola di state, jadi append
     // manual ke FormData; foto lama (entri tanpa .file) tidak diunggah ulang.
     imagePreviews.forEach(p => { if (p.file) formData.append('images', p.file); });
+    // Daftar id foto lama yang dihapus saat edit.
+    if (editItem) formData.set('delete_image_ids', JSON.stringify(removedImageIds));
     return boundAction(prev, formData);
   }, null);
 

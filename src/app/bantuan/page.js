@@ -55,9 +55,11 @@ export default function BantuanPage() {
           <div id="kontak" className="card" style={{ scrollMarginTop: 'calc(var(--navbar-height) + var(--space-lg))' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: 'var(--space-md)' }}>Kontak Kami</h2>
             <p className="text-muted" style={{ lineHeight: 1.8 }}>
-              WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a><br />
-              Email: <a href="mailto:info@rewearworks.com">info@rewearworks.com</a><br />
-              Lokasi: Jakarta, Indonesia
+              WhatsApp: <a href="https://wa.me/6283849615304">+62 838-4961-5304</a><br />
+              Email: <a href="mailto:rewearworks@gmail.com">rewearworks@gmail.com</a><br />
+              Instagram: <a href="https://instagram.com/rewearworks.sby" target="_blank" rel="noopener noreferrer">@rewearworks.sby</a><br />
+              TikTok: <a href="https://www.tiktok.com/@rewear.works_sby" target="_blank" rel="noopener noreferrer">@rewear.works_sby</a><br />
+              Lokasi: Surabaya, Indonesia
             </p>
             <Link href="/shop" className="btn btn-primary btn-sm" style={{ marginTop: 'var(--space-md)' }}>Mulai Belanja</Link>
           </div>

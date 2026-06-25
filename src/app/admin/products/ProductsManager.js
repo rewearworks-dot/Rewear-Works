@@ -246,8 +246,7 @@ export default function ProductsManager({ products, categories }) {
                 {state?.error && <div className="auth-error" style={{ marginBottom: 'var(--space-md)' }}>{state.error}</div>}
 
                 {/* Tab: Info Produk */}
-                {activeTab === 'info' && (
-                  <>
+                <div style={{ display: activeTab === 'info' ? 'block' : 'none' }}>
                     <div className="form-group">
                       <label className="form-label">Nama Produk *</label>
                       <input className="form-input" name="name" value={form.name} onChange={handleChange} required placeholder="contoh: Jaket Denim Vintage Levi's" />
@@ -311,12 +310,10 @@ export default function ProductsManager({ products, categories }) {
                       <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} value="true" />
                       <span style={{ fontWeight: 500 }}>Tampilkan sebagai Produk Unggulan di Beranda</span>
                     </label>
-                  </>
-                )}
+                </div>
 
                 {/* Tab: Foto & Video */}
-                {activeTab === 'media' && (
-                  <>
+                <div style={{ display: activeTab === 'media' ? 'block' : 'none' }}>
                     <div className="form-group">
                       <label className="form-label">Foto Produk</label>
                       <p className="text-muted" style={{ fontSize: '0.85rem', marginBottom: 'var(--space-md)' }}>
@@ -350,12 +347,10 @@ export default function ProductsManager({ products, categories }) {
                       <label className="form-label">Video Produk (URL)</label>
                       <input className="form-input" name="video_url" value={form.video_url} onChange={handleChange} placeholder="https://youtube.com/watch?v=..." />
                     </div>
-                  </>
-                )}
+                </div>
 
                 {/* Tab: Ukuran */}
-                {activeTab === 'size' && (
-                  <>
+                <div style={{ display: activeTab === 'size' ? 'block' : 'none' }}>
                     <div className="grid grid-2">
                       <div className="form-group">
                         <label className="form-label">Ukuran Tersedia *</label>
@@ -379,8 +374,7 @@ export default function ProductsManager({ products, categories }) {
                         </div>
                       ))}
                     </div>
-                  </>
-                )}
+                </div>
               </div>
 
               <div className="modal-footer">

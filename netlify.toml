@@ -1,0 +1,13 @@
+# Konfigurasi deploy Netlify untuk Next.js 16 (App Router, SSR + Server Actions).
+# Plugin resmi (@netlify/plugin-nextjs / OpenNext) yang membuat route SSR berjalan.
+# Tanpa ini, Netlify memublikasikan situs statis → semua route balik 404.
+
+[build]
+  command = "next build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# JANGAN tambahkan redirect SPA catch-all (/* -> /index.html) di sini —
+# itu untuk app statis dan justru merusak routing/SSR Next.js.

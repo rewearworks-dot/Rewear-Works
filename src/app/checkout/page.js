@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { formatCurrency } from '@/utils/helpers';
@@ -125,6 +126,19 @@ export default function CheckoutPage() {
                 <h3 style={{ fontFamily: 'var(--font-body)', marginBottom: 'var(--space-lg)' }}>Ringkasan Pesanan</h3>
                 {items.map(item => (
                   <div key={item.cartId} className="flex-between" style={{ marginBottom: 'var(--space-md)', gap: 'var(--space-md)' }}>
+                    <div style={{
+                      width: 48, height: 48, borderRadius: 'var(--radius-sm)', flexShrink: 0,
+                      background: 'var(--color-bg-alt)', position: 'relative', overflow: 'hidden',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      {item.image ? (
+                        <Image src={item.image} alt={item.name} fill sizes="48px" style={{ objectFit: 'cover' }} />
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-light)" strokeWidth="1.5">
+                          <path d="M20.38 3.46L16 2L12 5.5L8 2L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6l1 12h10l1-12h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                        </svg>
+                      )}
+                    </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontWeight: 600, fontSize: '0.9rem' }}>{item.name}</p>
                       <p className="text-muted" style={{ fontSize: '0.8rem' }}>

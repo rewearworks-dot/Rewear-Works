@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/utils/helpers';
 
@@ -36,12 +37,16 @@ export default function CartPage() {
                 <div key={item.cartId} className="card flex-between" style={{ padding: 'var(--space-lg)', gap: 'var(--space-lg)' }}>
                   <div style={{
                     width: 80, height: 80, borderRadius: 'var(--radius-md)',
-                    background: 'var(--color-bg-alt)', flexShrink: 0,
+                    background: 'var(--color-bg-alt)', flexShrink: 0, position: 'relative', overflow: 'hidden',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-light)" strokeWidth="1.5">
-                      <path d="M20.38 3.46L16 2L12 5.5L8 2L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6l1 12h10l1-12h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
-                    </svg>
+                    {item.image ? (
+                      <Image src={item.image} alt={item.name} fill sizes="80px" style={{ objectFit: 'cover' }} />
+                    ) : (
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-light)" strokeWidth="1.5">
+                        <path d="M20.38 3.46L16 2L12 5.5L8 2L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6l1 12h10l1-12h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                      </svg>
+                    )}
                   </div>
 
                   <div style={{ flex: 1, minWidth: 0 }}>

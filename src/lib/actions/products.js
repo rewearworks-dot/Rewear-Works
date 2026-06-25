@@ -107,8 +107,8 @@ export async function createProduct(prevState, formData) {
   }).select('id').single();
   if (error) return { error: 'Gagal menyimpan produk' };
 
-  // Upload gambar
-  const files = formData.getAll('images');
+  // Upload gambar (abaikan entri kosong dari input file)
+  const files = formData.getAll('images').filter(f => f instanceof File && f.size > 0);
   if (files.length > 0) {
     const result = await uploadImages(supabase, inserted.id, files);
     if (result.error) return result;
@@ -149,9 +149,9 @@ export async function updateProduct(prevState, formData) {
   }).eq('id', id);
   if (error) return { error: 'Gagal memperbarui produk' };
 
-  // Upload gambar baru (jika ada)
-  const files = formData.getAll('images');
-  if (files.length > 0 && files[0] instanceof File && files[0].size > 0) {
+  // Upload gambar baru (abaikan entri kosong dari input file)
+  const files = formData.getAll('images').filter(f => f instanceof File && f.size > 0);
+  if (files.length > 0) {
     const result = await uploadImages(supabase, id, files);
     if (result.error) return result;
   }

@@ -353,7 +353,7 @@ export default function ProductsManager({ products, categories }) {
                           </button>
                         )}
                       </div>
-                      <input ref={fileInputRef} type="file" name="images" accept="image/jpeg,image/png,image/webp" multiple onChange={handleImageUpload} style={{ display: 'none' }} />
+                      <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleImageUpload} style={{ display: 'none' }} />
                     </div>
                     <div className="form-group">
                       <label className="form-label">Video Produk (URL)</label>

@@ -59,7 +59,7 @@ export default function ProductsManager({ products, categories }) {
       featured: p.featured,
       measurements: { ...emptyForm.measurements, ...(p.measurements || {}) },
     });
-    setImagePreviews(p.images || []);
+    setImagePreviews((p.images || []).map(url => ({ url })));
     setActiveTab('info');
     setShowModal(true);
   };
@@ -76,10 +76,11 @@ export default function ProductsManager({ products, categories }) {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    files.forEach(file => {
-      const url = URL.createObjectURL(file);
-      setImagePreviews(prev => [...prev, url]);
-    });
+    // Simpan objek File di state (bukan hanya URL preview) supaya benar-benar ikut terkirim.
+    setImagePreviews(prev => [
+      ...prev,
+      ...files.map(file => ({ url: URL.createObjectURL(file), file })),
+    ]);
     e.target.value = '';
   };
 
@@ -96,6 +97,9 @@ export default function ProductsManager({ products, categories }) {
     // We need a plain FormData, but useActionState gives us one from the form
     // The measurements are complex — let's just handle it server-side via hidden field
     formData.set('measurements', JSON.stringify(clean));
+    // Lampirkan foto baru (objek File). Input file dikelola di state, jadi append
+    // manual ke FormData; foto lama (entri tanpa .file) tidak diunggah ulang.
+    imagePreviews.forEach(p => { if (p.file) formData.append('images', p.file); });
     return boundAction(prev, formData);
   }, null);
 
@@ -321,9 +325,9 @@ export default function ProductsManager({ products, categories }) {
                       </p>
 
                       <div className="image-upload-grid">
-                        {imagePreviews.map((src, i) => (
+                        {imagePreviews.map((item, i) => (
                           <div key={i} className="image-upload-item">
-                            <img src={src} alt={`Foto ${i + 1}`} />
+                            <img src={item.url} alt={`Foto ${i + 1}`} />
                             <div className="image-upload-overlay">
                               {i === 0 && <span className="image-upload-badge">Utama</span>}
                               <button type="button" className="image-upload-remove" onClick={() => removePreview(i)} title="Hapus foto" aria-label="Hapus foto">

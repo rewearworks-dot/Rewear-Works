@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
-import { formatCurrency } from '@/utils/helpers';
 import { getProducts } from '@/lib/data/products';
 import { getCategories } from '@/lib/data/categories';
 
@@ -40,34 +39,10 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Floating cards - 3D elements */}
+        {/* Hero showcase image */}
         <div className="hero-visual">
-          <div className="floating-card" style={{'--rotate': '-5deg'}}>
-            <div className="floating-card-img">
-              <img src="/hero/shirt-1.jpg" alt="Jaket Denim Vintage" />
-            </div>
-            <div className="floating-card-info">
-              <h4>Jaket Denim Vintage</h4>
-              <span className="price">{formatCurrency(185000)}</span>
-            </div>
-          </div>
-          <div className="floating-card" style={{'--rotate': '5deg'}}>
-            <div className="floating-card-img">
-              <img src="/hero/shirt-2.jpg" alt="Dress Floral Vintage" />
-            </div>
-            <div className="floating-card-info">
-              <h4>Dress Floral Vintage</h4>
-              <span className="price">{formatCurrency(135000)}</span>
-            </div>
-          </div>
-          <div className="floating-card" style={{'--rotate': '-3deg'}}>
-            <div className="floating-card-img">
-              <img src="/hero/shirt-3.jpg" alt="Tas Tote Canvas" />
-            </div>
-            <div className="floating-card-info">
-              <h4>Tas Tote Canvas</h4>
-              <span className="price">{formatCurrency(175000)}</span>
-            </div>
+          <div className="hero-showcase">
+            <img src="/hero/hero.jpg" alt="Koleksi kemeja preloved Rewear Works" />
           </div>
         </div>
       </section>

@@ -483,6 +483,24 @@ h4 { font-size: 1.125rem; }
   display: block;
 }
 
+.hero-showcase {
+  position: absolute;
+  top: 50%;
+  right: 6%;
+  transform: translateY(-50%) rotate(-3deg);
+  width: 400px;
+  max-width: 90%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.hero-showcase img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .floating-card-info {
   padding: var(--space-md);
 }

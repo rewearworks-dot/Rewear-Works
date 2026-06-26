@@ -10,6 +10,15 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
   const [profile, setProfile] = useState(initialProfile);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Sinkronkan state dari props server (initialUser/initialProfile) saat berubah.
+  // Penting setelah login/register/logout via server action yang melakukan
+  // revalidatePath('/', 'layout') + redirect: layout re-render & kirim props baru,
+  // tapi provider tidak remount pada navigasi klien sehingga navbar perlu sinkron manual.
+  useEffect(() => {
+    setUser(initialUser);
+    if (initialProfile !== undefined) setProfile(initialProfile);
+  }, [initialUser?.id, initialProfile?.id]);
+
   // Listener: sinkron (jangan await Supabase di dalam callback).
   // Cukup set user; profil di-fetch oleh effect kedua di bawah.
   useEffect(() => {

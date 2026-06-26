@@ -1,10 +1,14 @@
 'use client';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import Link from 'next/link';
-import { login } from '@/lib/actions/auth';
+import { updatePassword } from '@/lib/actions/auth';
 
-export default function LoginPage() {
-  const [state, action, pending] = useActionState(login, null);
+export default function ResetPasswordPage() {
+  const [state, action, pending] = useActionState(updatePassword, null);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [clientError, setClientError] = useState('');
+
+  const error = clientError || state?.error;
 
   return (
     <div className="auth-page page-enter">
@@ -14,45 +18,50 @@ export default function LoginPage() {
             <Link href="/" className="auth-logo">
               <img src="/logo-circle.png" alt="Rewear Works" />
             </Link>
-            <h1>Masuk</h1>
-            <p className="text-muted">Masuk ke akun Rewear Works Anda</p>
+            <h1>Reset Password</h1>
+            <p className="text-muted">Masukkan password baru untuk akun Anda</p>
           </div>
 
-          {state?.error && (
+          {error && (
             <div className="auth-error">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-              {state.error}
+              {error}
             </div>
           )}
 
-          <form action={action}>
+          <form action={(formData) => {
+            setClientError('');
+            const pw = formData.get('password');
+            if (pw !== confirmPassword) {
+              setClientError('Password dan konfirmasi password tidak sama');
+              return;
+            }
+            action(formData);
+          }}>
             <div className="form-group">
-              <label className="form-label">Email</label>
+              <label className="form-label">Password Baru</label>
               <input
                 className="form-input"
-                type="email"
-                name="email"
-                placeholder="nama@email.com"
+                type="password"
+                name="password"
+                placeholder="Minimal 6 karakter"
                 required
+                minLength={6}
                 autoFocus
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label">Password</label>
+              <label className="form-label">Konfirmasi Password</label>
               <input
                 className="form-input"
                 type="password"
-                name="password"
-                placeholder="Masukkan password"
+                placeholder="Ulangi password baru"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
                 required
-                minLength={6}
               />
             </div>
-
-            <p className="auth-forgot-link" style={{ textAlign: 'right', marginTop: '-0.5rem', marginBottom: '1rem' }}>
-              <Link href="/forgot-password" className="auth-link">Lupa password?</Link>
-            </p>
 
             <button
               type="submit"
@@ -62,7 +71,7 @@ export default function LoginPage() {
               {pending ? (
                 <span className="auth-spinner"></span>
               ) : (
-                'Masuk'
+                'Simpan Password Baru'
               )}
             </button>
           </form>
@@ -72,8 +81,7 @@ export default function LoginPage() {
           </div>
 
           <p className="auth-footer-text">
-            Belum punya akun?{' '}
-            <Link href="/register" className="auth-link">Daftar sekarang</Link>
+            <Link href="/login" className="auth-link">Kembali ke Login</Link>
           </p>
         </div>
       </div>

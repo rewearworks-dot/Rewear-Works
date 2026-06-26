@@ -47,8 +47,8 @@ export default function OrdersManager({ orders: initialOrders }) {
         </div>
       )}
 
-      <div className="card" style={{ overflow: 'auto' }}>
-        <table className="admin-table">
+      <div className="table-container">
+        <table className="table">
           <thead>
             <tr>
               <th>ID</th>

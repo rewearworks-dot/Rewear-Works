@@ -44,7 +44,7 @@ export default async function HomePage() {
         <div className="hero-visual">
           <div className="floating-card" style={{'--rotate': '-5deg'}}>
             <div className="floating-card-img">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CA8A04" strokeWidth="1.5"><path d="M20.38 3.46L16 2L12 5.5L8 2L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6l1 12h10l1-12h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+              <img src="/hero/shirt-1.jpg" alt="Jaket Denim Vintage" />
             </div>
             <div className="floating-card-info">
               <h4>Jaket Denim Vintage</h4>
@@ -52,8 +52,8 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="floating-card" style={{'--rotate': '5deg'}}>
-            <div className="floating-card-img" style={{background: 'linear-gradient(135deg, #EDE4D8, #D4C4A8)'}}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C0392B" strokeWidth="1.5"><path d="M6 2L2 8l10 14L22 8l-4-6z"/></svg>
+            <div className="floating-card-img">
+              <img src="/hero/shirt-2.jpg" alt="Dress Floral Vintage" />
             </div>
             <div className="floating-card-info">
               <h4>Dress Floral Vintage</h4>
@@ -61,8 +61,8 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="floating-card" style={{'--rotate': '-3deg'}}>
-            <div className="floating-card-img" style={{background: 'linear-gradient(135deg, #F0EBE3, #E5DDD3)'}}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2C3E6B" strokeWidth="1.5"><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M3 12h18"/><path d="M12 6v15"/></svg>
+            <div className="floating-card-img">
+              <img src="/hero/shirt-3.jpg" alt="Tas Tote Canvas" />
             </div>
             <div className="floating-card-info">
               <h4>Tas Tote Canvas</h4>
@@ -86,13 +86,11 @@ export default async function HomePage() {
               <Link key={cat.id} href={`/shop?category=${cat.slug}`} style={{ textDecoration: 'none' }}>
                 <div className={`category-card`}>
                   <div className={`category-card-bg ${cat.slug === 'wanita' ? 'wanita' : ''}`}>
-                    <div className="category-card-icon">
-                      {cat.slug === 'pria' ? (
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1"><path d="M20.38 3.46L16 2L12 5.5L8 2L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6l1 12h10l1-12h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-                      ) : (
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1"><path d="M6 2L2 8l10 14L22 8l-4-6z"/></svg>
-                      )}
-                    </div>
+                    <img
+                      className="category-card-img"
+                      src={cat.slug === 'pria' ? '/categories/pria.jpg' : '/categories/wanita.jpg'}
+                      alt={cat.name}
+                    />
                   </div>
                   <div className="category-card-overlay"></div>
                   <div className="category-card-content">

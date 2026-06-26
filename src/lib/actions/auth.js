@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
-import { RegisterSchema } from '@/lib/validation';
+import { RegisterSchema, ForgotPasswordSchema, ResetPasswordSchema } from '@/lib/validation';
 
 export async function login(prevState, formData) {
   const email = String(formData.get('email') || '');
@@ -55,4 +55,37 @@ export async function logout() {
   await supabase.auth.signOut();
   revalidatePath('/', 'layout');
   redirect('/');
+}
+
+export async function requestPasswordReset(prevState, formData) {
+  const parsed = ForgotPasswordSchema.safeParse({ email: formData.get('email') });
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  const { email } = parsed.data;
+
+  try {
+    const supabase = await createClient();
+    const site = process.env.NEXT_PUBLIC_SITE_URL || '';
+    await supabase.auth.resetPasswordForEmail(
+      email,
+      // Hanya set redirectTo bila site non-empty (mirror penanganan `site` di register)
+      site ? { redirectTo: `${site}/auth/callback?next=/reset-password` } : undefined,
+    );
+  } catch {
+    return { error: 'Gagal mengirim email reset' };
+  }
+  // Jangan bocorkan apakah email terdaftar — selalu pesan generik
+  return { success: 'Jika email terdaftar, link reset password telah dikirim. Cek inbox/spam Anda.' };
+}
+
+export async function updatePassword(prevState, formData) {
+  const parsed = ResetPasswordSchema.safeParse({ password: formData.get('password') });
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  const { password } = parsed.data;
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: 'Gagal memperbarui password. Link mungkin sudah kedaluwarsa, minta link baru.' };
+
+  revalidatePath('/', 'layout');
+  redirect('/login?reset=1');
 }
